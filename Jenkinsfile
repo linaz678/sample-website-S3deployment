@@ -1,10 +1,11 @@
 pipeline {
-    agent {
-        docker {
-            image 'node:16-alpine' 
-            args '-p 3000:3000' 
-        }
-    } 
+    // agent {
+    //     docker {
+    //         image 'node:16-alpine' 
+    //         args '-p 3000:3000' 
+    //     }
+    // } 
+    agent any
 
     environment{
         CI ='true'
@@ -26,12 +27,12 @@ pipeline {
     }
         //Install denpendencies 
     stages{
-        stage('Install dependency')
-        {
-            steps{
-             echo "Installing packages"
-             sh 'nmp install'}
-        }
+        // stage('Install dependency')
+        // {
+        //     steps{
+        //      echo "Installing packages"
+        //      sh 'nmp install'}
+        // }
         stage('test')
         {
             steps{
