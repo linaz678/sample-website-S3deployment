@@ -54,7 +54,8 @@ pipeline {
          }
 
         stage('upload frontend to  S3 bucket') {
-            when {expression{return params.deloytos3}}   
+            when {expression{return params.deloytos3}} 
+
             steps {
                 withAWS(credentials: AWS_CRED, region: 'ap-southeast-2')
              {
@@ -64,7 +65,6 @@ pipeline {
                     aws s3 cp index.html s3://$S3BucketName
                     '''}
              }
-
             }
          
          }
