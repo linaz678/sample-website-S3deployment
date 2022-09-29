@@ -1,5 +1,11 @@
 pipeline {
-    agent any 
+    agent {
+        docker {
+            image 'node:16-alpine' 
+            args '-p 3000:3000' 
+        }
+    } 
+
     environment{
         CI ='true'
         AWS_CRED        = 'AWS_linazhao' //Change to yours
