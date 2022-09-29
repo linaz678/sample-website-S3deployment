@@ -49,7 +49,7 @@ pipeline {
                     echo "deploy to S3 "
                     sh '''
                     aws s3 mb s3://$S3BucketName --region $AWS_REGION
-                    aws s3 cp $VPCTemplate s3://$S3BucketName
+                    aws s3 cp index.html s3://$S3BucketName
                     '''}
              }
 
