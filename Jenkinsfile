@@ -1,11 +1,9 @@
 pipeline {
-    // agent {
-    //     docker {
-    //         image 'node:16-alpine' 
-    //         args '-p 3000:3000' 
-    //     }
-    // } 
     agent any
+        parameters {
+        booleanParam defaultValue: false, name: 'createS3bucket'
+        booleanParam defaultValue: false, name: 'deloytos3'
+    }
 
     environment{
         CI ='true'
@@ -39,23 +37,37 @@ pipeline {
              echo "Testing"
              }
         }
-        stage('deloy to S3')    
-        {
-         steps {
-
-            withAWS(credentials: AWS_CRED, region: 'ap-southeast-2')
+        stage('create S3 bucket') {
+            when {expression{return params.createS3bucket}}   
+            steps {
+                withAWS(credentials: AWS_CRED, region: 'ap-southeast-2')
              {
                 dir('src') {
                     echo "deploy to S3 "
                     sh '''
                     aws s3 mb s3://$S3BucketName --region $AWS_REGION
+                    '''}
+             }
+
+         }
+         
+         }
+
+        stage('upload frontend to  S3 bucket') {
+            when {expression{return params.deloytos3}}   
+            steps {
+                withAWS(credentials: AWS_CRED, region: 'ap-southeast-2')
+             {
+                dir('src') {
+                    echo "deploy to S3 "
+                    sh '''
                     aws s3 cp index.html s3://$S3BucketName
                     '''}
              }
 
-        }
-        }
+            }
+         
+         }
 
     }
-
 }
